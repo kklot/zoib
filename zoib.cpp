@@ -29,7 +29,6 @@ Type objective_function<Type>::operator()()
 {
   parallel_accumulator<Type> f(this);
 
-  DATA_SCALAR(prior_only);
   DATA_VECTOR(y);
   DATA_MATRIX(X);
   DATA_SPARSE_MATRIX(IID);
@@ -66,9 +65,9 @@ Type objective_function<Type>::operator()()
   vector<Type> mu = X * betas + IID * pid;
   mu = invlogit(mu);
 
-  vector<Type> lli(N);
   for (int i = 0; i < N; i++)
     f -= zero_one_inflated_beta_lpdf<Type>(y[i], mu[i], phi, zoi, coi);
+
   REPORT(mu);
   REPORT(coi);
   REPORT(zoi);
